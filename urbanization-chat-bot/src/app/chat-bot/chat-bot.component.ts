@@ -1,7 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-chat-bot',
+  imports: [MatCardModule,CommonModule,FormsModule],
   templateUrl: './chat-bot.component.html',
   styleUrls: ['./chat-bot.component.scss']
 })
