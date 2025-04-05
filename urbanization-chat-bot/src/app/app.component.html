@@ -1,0 +1,24 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" opened>
+      <mat-nav-list>
+        <a class="dash" mat-list-item href="/dashboard">Dashboard</a>
+        <a class="dash" mat-list-item href="/chat-bot">Chat Bot</a>
+        <a class="dash" mat-list-item href="/contributors">Profile</a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Urbanization Shift</span>
+      </mat-toolbar>
+  
+      <div class="main-content">
+        <!-- Your main content goes here -->
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

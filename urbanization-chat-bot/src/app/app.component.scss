@@ -1,0 +1,24 @@
+.sidenav-container {
+    height: 100vh;
+  }
+  
+  mat-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #4F6D7A;
+    color: #333333 ;
+  }
+  
+  .main-content {
+    padding: 16px;
+  }
+
+  button {
+    border-style:groove
+  }
+
+  .dash {
+    background-color: #F4A261;
+  }
+  
