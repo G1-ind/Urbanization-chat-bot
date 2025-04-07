@@ -8,18 +8,29 @@
         </p>
       </mat-card>
     </div>
-  
+
+   <div class="chat-container">
     <div class="chat-body" #chatBody>
       <div *ngFor="let message of messages">
-        <div [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
-          {{ message.text }}
+        <div class="full-row">
+          <div [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
+            {{ message.text }}
+          </div>
         </div>
       </div>
     </div>
-  
-    <div class="chat-input">
-      <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
-      <button (click)="sendMessage()">Send</button>
-    </div>
   </div>
+  <div class="chat-input">
+    <label for="userMessageInput" class="visually-hidden">Type your message</label>
+    <input
+      id="userMessageInput"
+      type="text"
+      [(ngModel)]="userInput"
+      (keyup.enter)="sendMessage()"
+      [attr.placeholder]="!conversationStarted ? 'Type hi to begin...' : 'Type your message...'"
+      title="Chat input"
+    />
+    <button (click)="sendMessage()" aria-label="Send Message">Send</button>
+  </div>
+</div>
   

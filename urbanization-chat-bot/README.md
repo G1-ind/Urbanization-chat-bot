@@ -1,59 +1,106 @@
-# UrbanizationChatBot
+Perfect! Here's a clean and professional `README.md` for your **Angular Frontend (Urbanization Shift Chatbot UI)** that pairs with your FastAPI backend:
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
+---
 
-## Development server
+# 💬 Urbanization Shift Detection Chatbot (Angular)
 
-To start a local development server, run:
+An interactive chatbot interface built with Angular that communicates with a FastAPI backend to detect urbanization shift based on structured inputs like population density, green cover, and infrastructure indicators.
+
+---
+
+## 🚀 Features
+
+- Conversational chatbot UI powered by Angular
+- Interacts with FastAPI backend via HTTP
+- Displays model predictions with confidence
+- Input-guided conversations to simulate a user-bot flow
+- Real-time UX with message animations and dynamic state
+
+---
+
+## 🛠️ Tech Stack
+
+- **Angular** 17+
+- **TypeScript**
+- **RxJS**
+- **Material UI** (optional)
+- **FastAPI** backend (must be running separately)
+
+---
+
+## ⚙️ Setup
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Serve the App
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Visit [http://localhost:4200](http://localhost:4200) in your browser.
 
-## Code scaffolding
+> Make sure your FastAPI backend is running on `http://127.0.0.1:8000`
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
+## 🔁 API Integration
+
+The frontend communicates with the backend using Angular’s `HttpClient`.  
+Make sure the service is configured correctly in `urbanization.service.ts`:
+
+```ts
+predictUrbanShift(data: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}/predict`, data);
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Also, don’t forget to include CORS middleware in the FastAPI backend to allow cross-origin requests.
+
+---
+
+## 💡 Example Interaction
+
+1. The chatbot prompts the user to type `"hi"`
+2. The bot sequentially asks for each input value (e.g., population density, etc.)
+3. On completing input, it calls the prediction API and displays the result
+
+---
+
+## 📦 Build for Production
 
 ```bash
-ng generate --help
+ng build --configuration=production
 ```
 
-## Building
+---
 
-To build the project run:
+## 🧠 Backend Integration
 
-```bash
-ng build
+Make sure the backend URL in your service matches the actual API:
+
+```ts
+private apiUrl = 'http://127.0.0.1:8000';
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+If deployed, update this to your hosted API endpoint.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🧪 Sample Test Data
 
-```bash
-ng test
+You can generate prediction inputs using the following structure:
+
+```ts
+const dummyData = {
+  population_density: 1500,
+  green_cover_percentage: 35.5,
+  road_density: 7.8,
+  nighttime_light_intensity: 50.3,
+  water_bodies_nearby: 3
+};
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
