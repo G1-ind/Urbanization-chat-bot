@@ -1,7 +1,3 @@
-Awesome! Here's a clean and informative `README.md` you can use for your [Urbanization-chat-bot](https://github.com/G1-ind/Urbanization-chat-bot) GitHub repository to help others set up the project on their local system:
-
----
-
 # 🏙️ Urbanization Chat Bot
 
 A smart assistant powered by AI and deep learning (U-Net model) to detect urbanization shifts based on satellite data and relevant features. The project consists of:
