@@ -1,2 +1,19 @@
+<div class="dashboard-container mat-elevation-z2">
+  <h2 class="dashboard-title">Urbanization Dashboard</h2>
 
-  
+  <div class="cards-row">
+    <app-stats-card *ngFor="let stat of statsData" [title]="stat.title" [value]="stat.value" [icon]="stat.icon"></app-stats-card>
+  </div>
+
+  <div class="charts-section">
+    <div class="dashboard-chart-container">
+      <canvas #dashboardChart class="chart" width="600" height="300"></canvas>
+    </div>
+    <div class="dashboard-chart-container">
+      <canvas #dashboardgenderChart class="chart" width="600" height="300"></canvas>
+    </div>
+    <div class="dashboard-chart-container">
+      <canvas #dashboardUrbanizationVsRoadDensityChart class="chart" width="600" height="300"></canvas>
+    </div>
+  </div>
+</div>

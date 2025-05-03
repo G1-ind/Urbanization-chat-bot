@@ -1,8 +1,9 @@
 fastapi
 uvicorn
 tensorflow
-scikit-learn
 joblib
-numpy
 pydantic
 pandas
+scikit-learn==1.6.0
+numpy
+python-multipart
