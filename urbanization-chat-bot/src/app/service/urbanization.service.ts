@@ -29,7 +29,27 @@ export class UrbanizationService {
     return this.http.post<UrbanShiftResponse>(`${this.apiUrl}/predict`, data);
   }
 
+  getMenu(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/menu`);
+  }
+
+  getTrends(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/trends`);
+  }
+
   getStats(): Observable<any> {
     return this.http.get(`${this.apiUrl}/stats`);
+  }
+
+  getGenderData(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gender-diff-trends`);
+  }
+
+  getUrbanvsroad(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/urbanization-vs-road-density`);
+  }
+
+  getNightLight(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/nighttime-intensity-trends`);
   }
 }

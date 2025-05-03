@@ -1,0 +1,57 @@
+/* app-stats-card.component.scss */
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 180px; /* Set fixed height for each card */
+  padding: 20px;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Makes sure content is spaced evenly */
+  height: 100%; /* Ensure the card content fills the height */
+}
+
+.stat-icon {
+  font-size: 40px;
+  color: #5c6bc0; /* Icon color */
+  margin-bottom: 10px;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center; /* Center the text vertically */
+}
+
+.stat-title {
+  font-size: 14px;
+  color: #777;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.cards-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.cards-row app-stats-card {
+  flex: 1;
+  max-width: 31%;  /* Ensures the cards are side by side */
+  height: 100%;  /* Make sure all cards maintain same height */
+}

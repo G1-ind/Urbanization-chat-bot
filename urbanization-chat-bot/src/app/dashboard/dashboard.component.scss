@@ -1,36 +1,172 @@
+/* Ensure the body takes up the full screen and allows scrolling */
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow: auto;
+}
+
+/* Main dashboard container with full screen height */
 .dashboard-container {
-    padding: 20px;
-  
-    h2 {
-      text-align: center;
-      color: #3f51b5;
-      margin-bottom: 20px;
-    }
-  
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-  
-    .stat-card {
-      text-align: center;
-      background-color: #f1f5fb;
-      padding: 16px;
-  
-      h3 {
-        color: #2c3e50;
-        margin-bottom: 8px;
-      }
-  
-      p {
-        font-size: 1.4em;
-        font-weight: bold;
-        color: #3f51b5;
-      }
-    }
-  
-    
+  background: linear-gradient(145deg, #f0f4f8, #ffffff);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  min-height: 100vh;  /* Ensure the dashboard takes the full height */
+  overflow-y: auto;   /* Enable vertical scrolling */
+}
+
+/* Dashboard title styling */
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Cards section styling */
+.cards-row {
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: auto;  /* Allow horizontal scroll */
+  gap: 20px;
+  width: 100%;
+}
+
+/* Card styling */
+.cards-row app-stats-card {
+  flex: 0 0 auto; /* Cards take their natural width */
+  width: 220px;  /* Set a fixed width for all cards */
+  height: 220px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+/* Individual stats card styling */
+.app-stats-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for stats cards */
+.app-stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Stats card content arrangement */
+.stat-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Icon styling inside stats cards */
+.stat-icon {
+  font-size: 45px;
+  color: #3498db;
+  margin-bottom: 15px;
+}
+
+/* Stat title and value styling */
+.stat-info {
+  text-align: center;
+}
+
+.stat-title {
+  font-size: 14px;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+  .cards-row {
+    justify-content: flex-start;
+    overflow-x: auto;
   }
-  
+
+  .cards-row app-stats-card {
+    width: 150px;  /* Smaller width for small screens */
+    margin-right: 15px;  /* Space between cards */
+  }
+}
+
+/* Charts section styling */
+.charts-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  width: 100%;  /* Ensure the charts take up the full width */
+  flex-wrap: wrap;  /* Allow the charts to wrap on smaller screens */
+}
+
+/* Individual chart container */
+.dashboard-chart-container {
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  max-width: 100%;
+}
+
+/* Chart styling */
+.chart {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive styling for medium screens */
+@media (max-width: 1200px) {
+  .charts-section {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .dashboard-chart-container {
+    width: 48%;  /* Ensure each chart takes up 48% of the available space */
+    margin-bottom: 20px;
+  }
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+  .dashboard-chart-container {
+    width: 100%;  /* Stacks the charts on smaller screens */
+    max-width: 700px;
+    margin-bottom: 20px;  /* Space between charts on small screens */
+  }
+}

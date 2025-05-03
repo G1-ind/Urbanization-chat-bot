@@ -12,12 +12,24 @@
    <div class="chat-container">
     <div class="chat-body" #chatBody>
       <div *ngFor="let message of messages">
-        <div class="full-row">
-          <div [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
-            {{ message.text }}
-          </div>
-        </div>
-      </div>
+  <div class="full-row">
+    <div [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
+      <ng-container [ngSwitch]="message.type || 'text'">
+
+        <ng-container *ngSwitchCase="'text'">
+          {{ message.text }}
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'chart'">
+          <canvas #trendChart width="400" height="200"></canvas>
+        </ng-container>
+
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+      
     </div>
   </div>
   <div class="chat-input">
@@ -33,4 +45,5 @@
     <button (click)="sendMessage()" aria-label="Send Message">Send</button>
   </div>
 </div>
-  
+
+
