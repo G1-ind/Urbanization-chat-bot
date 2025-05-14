@@ -1,172 +1,165 @@
-/* Ensure the body takes up the full screen and allows scrolling */
-body, html {
-  height: 100%;
-  margin: 0;
-  overflow: auto;
-}
-
-/* Main dashboard container with full screen height */
+/* Base Container */
 .dashboard-container {
-  background: linear-gradient(145deg, #f0f4f8, #ffffff);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  max-width: 100%;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  min-height: 100vh;  /* Ensure the dashboard takes the full height */
-  overflow-y: auto;   /* Enable vertical scrolling */
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+  min-height: 100vh;
+  animation: fadeInPage 1.2s ease;
 }
 
-/* Dashboard title styling */
+/* Titles */
 .dashboard-title {
   font-size: 2.5rem;
-  font-weight: 700;
-  color: #2c3e50;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333;
   text-align: center;
-  margin-bottom: 30px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-family: 'Roboto', sans-serif;
+  animation: slideInDown 0.8s ease;
 }
 
-/* Cards section styling */
+/* Section Headings */
+h3 {
+  font-size: 1.6rem;
+  margin-top: 2rem;
+  color: #2e3b4e;
+  border-bottom: 2px solid #9baacf;
+  padding-bottom: 0.3rem;
+  animation: fadeInUp 0.6s ease;
+}
+
+/* Paragraphs */
+.dashboard-intro,
+.project-summary p,
+.chart-description {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Stats Cards Row */
 .cards-row {
   display: flex;
-  justify-content: flex-start;
-  overflow-x: auto;  /* Allow horizontal scroll */
-  gap: 20px;
-  width: 100%;
-}
-
-/* Card styling */
-.cards-row app-stats-card {
-  flex: 0 0 auto; /* Cards take their natural width */
-  width: 220px;  /* Set a fixed width for all cards */
-  height: 220px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
-}
-
-/* Individual stats card styling */
-.app-stats-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Hover effect for stats cards */
-.app-stats-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Stats card content arrangement */
-.stat-card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Icon styling inside stats cards */
-.stat-icon {
-  font-size: 45px;
-  color: #3498db;
-  margin-bottom: 15px;
-}
-
-/* Stat title and value styling */
-.stat-info {
-  text-align: center;
-}
-
-.stat-title {
-  font-size: 14px;
-  color: #7f8c8d;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-.stat-value {
-  font-size: 20px;
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-/* Responsive styling for smaller screens */
-@media (max-width: 768px) {
-  .cards-row {
-    justify-content: flex-start;
-    overflow-x: auto;
-  }
-
-  .cards-row app-stats-card {
-    width: 150px;  /* Smaller width for small screens */
-    margin-right: 15px;  /* Space between cards */
-  }
-}
-
-/* Charts section styling */
-.charts-section {
-  display: flex;
-  justify-content: space-between;
-  gap: 25px;
-  width: 100%;  /* Ensure the charts take up the full width */
-  flex-wrap: wrap;  /* Allow the charts to wrap on smaller screens */
-}
-
-/* Individual chart container */
-.dashboard-chart-container {
-  flex: 1;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 25px;
-  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   justify-content: center;
-  align-items: center;
-  height: 300px;
-  max-width: 100%;
+  margin-top: 1.5rem;
+  animation: fadeInCards 1s ease;
 }
 
-/* Chart styling */
-.chart {
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  height: 100%;
+/* Charts Section */
+.charts-section {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
-/* Responsive styling for medium screens */
-@media (max-width: 1200px) {
-  .charts-section {
-    flex-wrap: wrap;
-    justify-content: center;
+.dashboard-chart-container {
+  background: #ffffff;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 45%;
+  /* Adjust width of the chart containers */
+  // height: 300px;
+  /* Adjust height to make it more compact */
+  animation: popIn 0.8s ease;
+}
+
+/* Chart Descriptions */
+.chart-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Project Summary */
+.project-summary {
+  background-color: #fdfdfd;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-chart-container {
+    width: 100%;
+    height: 250px;
+    /* Smaller height on mobile devices */
+  }
+}
+
+/* Animations */
+@keyframes fadeInPage {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInCards {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .cards-row {
+    flex-direction: column;
+    align-items: center;
   }
 
   .dashboard-chart-container {
-    width: 48%;  /* Ensure each chart takes up 48% of the available space */
-    margin-bottom: 20px;
-  }
-}
-
-/* Responsive styling for smaller screens */
-@media (max-width: 768px) {
-  .dashboard-chart-container {
-    width: 100%;  /* Stacks the charts on smaller screens */
-    max-width: 700px;
-    margin-bottom: 20px;  /* Space between charts on small screens */
+    width: 100%;
   }
 }

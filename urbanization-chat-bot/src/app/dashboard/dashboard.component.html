@@ -1,19 +1,101 @@
 <div class="dashboard-container mat-elevation-z2">
   <h2 class="dashboard-title">Urbanization Dashboard</h2>
 
-  <div class="cards-row">
-    <app-stats-card *ngFor="let stat of statsData" [title]="stat.title" [value]="stat.value" [icon]="stat.icon"></app-stats-card>
-  </div>
+  <p class="dashboard-intro">
+    This dashboard provides a real-time analytical view of urban development trends across various regions. It uses data-driven insights
+    extracted from satellite imagery, census statistics, and environmental indicators to assist in decision-making for sustainable urban planning.
+  </p>
 
-  <div class="charts-section">
+  <section class="summary-section">
+    <h3>Key Urban Statistics</h3>
+    <p>
+      The cards below highlight the most critical metrics related to urbanization, such as population dynamics, infrastructure development,
+      environmental sustainability, and demographic trends.
+    </p>
+
+    <div class="cards-row">
+      <app-stats-card *ngFor="let stat of statsData"
+                      [title]="stat.title"
+                      [value]="stat.value"
+                      [icon]="stat.icon">
+      </app-stats-card>
+    </div>
+  </section>
+
+  <section class="charts-section">
+    <h3>Urbanization Trends & Visual Analysis</h3>
+    <p>
+      These charts visualize key trends such as the evolution of urbanization over time, gender-based population shifts, and the relationship
+      between road density and urban expansion. These insights support policy planning, zoning adjustments, and infrastructure optimization.
+    </p>
+
     <div class="dashboard-chart-container">
+      <h4>Urbanization Over Time</h4>
       <canvas #dashboardChart class="chart" width="600" height="300"></canvas>
+      <p class="chart-description">
+        This chart shows how the average population and green cover percentage have changed year over year.
+      </p>
     </div>
+
     <div class="dashboard-chart-container">
+      <h4>Gender Distribution Trends</h4>
       <canvas #dashboardgenderChart class="chart" width="600" height="300"></canvas>
+      <p class="chart-description">
+        Tracks average male and female population differences to help understand gender-based migration and settlement trends.
+      </p>
     </div>
+
     <div class="dashboard-chart-container">
+      <h4>Urbanization vs Road Density</h4>
       <canvas #dashboardUrbanizationVsRoadDensityChart class="chart" width="600" height="300"></canvas>
+      <p class="chart-description">
+        Illustrates the correlation between increasing road networks and the detected percentage of urban shifts.
+      </p>
     </div>
-  </div>
+
+    <div class="dashboard-chart-container">
+      <h4>Nighttime Light Intensity Trends</h4>
+      <canvas #nighttimeLightChart class="chart" width="600" height="300"></canvas>
+      <p class="chart-description">
+        Displays the average nighttime light intensity over the years, often associated with urban growth, infrastructure development, and increased human activity.
+      </p>
+    </div>
+
+    <div class="dashboard-chart-container">
+      <h4>Slum Area Proportion Trends by Urban Zone</h4>
+      <canvas #dashboardslumChartRef class="chart" width="600" height="300"></canvas>
+      <p class="chart-description">
+        Shows how the proportion of slum areas has changed over the years across Metro, Tier 1, and Tier 2 zones, highlighting urban development disparities.
+      </p>
+    </div>
+    
+    <div class="dashboard-chart-container">
+      <h4>Land Use Change Trends by Zoning Code</h4>
+      <canvas #dashboardLandUseChartRef class="chart" width="600" height="300"></canvas>
+      <p class="chart-description">
+        Shows how different land use types (e.g., Residential, Commercial, Green areas) have evolved over the years across Metro, Tier 1, and Tier 2 zones, offering insights into urban growth patterns and zoning transformations.
+      </p>
+    </div>
+    
+    
+  </section>
+
+  <section class="project-summary">
+    <h3>About This Project</h3>
+    <p>
+      The Urbanization Shift Detection Platform integrates machine learning predictions with real-world urban data to identify
+      transformation patterns in growing cities. By combining statistical processing with neural network models, this tool delivers
+      predictive insights that help urban planners, researchers, and policymakers take informed action toward sustainable growth.
+    </p>
+
+    <p>
+      Features include:
+    </p>
+    <ul>
+      <li>Prediction of urban shifts using AI models</li>
+      <li>Dynamic trend analysis from historical datasets</li>
+      <li>Geospatial factors like green cover, light intensity, and road density</li>
+      <li>Demographic breakdown including male/female population differences</li>
+    </ul>
+  </section>
 </div>

@@ -20,11 +20,18 @@ export class DashboardComponent implements OnInit{
   @ViewChild('dashboardChart', { static: true }) dashboardChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('dashboardgenderChart', { static: true }) dashboardgenderChart!: ElementRef<HTMLCanvasElement>;
   @ViewChild('dashboardUrbanizationVsRoadDensityChart', { static: true }) dashboardUrbanizationVsRoadDensityChart!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('nighttimeLightChart', { static: true }) nighttimeLightChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('dashboardslumChartRef', { static: true }) dashboardslumChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('dashboardLandUseChartRef', { static: true }) dashboardLandUseChartRef!: ElementRef<HTMLCanvasElement>;
+
 
   statsData: any[] = [];
   chartInstance: any;
   chartgenderInstance:any
   chartUrbanizationVsRoadDensityInstance: any;
+  nighttimeLightChartInstance: any;
+  slumInstance: any;
+  landUseInstance: any;
 
   constructor(
     private urbanService: UrbanizationService,
@@ -36,6 +43,9 @@ export class DashboardComponent implements OnInit{
     this.genderPopulationData();
     this.stats();
     this.urbanizationVsRoadDensityData();
+    this.showNighttimeLightTrends();
+    this.showSlumAreaTrends();
+    this.showLandUseTrends();
   }
 
   stats(){
@@ -385,6 +395,266 @@ export class DashboardComponent implements OnInit{
             grid: {
               drawOnChartArea: false  // Optional: hide grid lines for second Y axis
             }
+          }
+        }
+      }
+    });
+  }
+
+  async showNighttimeLightTrends() {
+    await this.urbanService.getNightLight().subscribe({
+      next: (res) => {
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.renderNighttimeLightChart(res.data);
+        }, 0);
+      },
+      error: (err) => console.error('Error fetching nighttime light trends:', err),
+    });
+  }
+
+  renderNighttimeLightChart(data: any[]) {
+    const years = data.map(item => item.year);
+    const intensities = data.map(item => item.average_nighttime_light_intensity);
+  
+    const canvas = this.nighttimeLightChartRef?.nativeElement;
+    if (!canvas) {
+      console.error("Nighttime Light chart canvas not found");
+      return;
+    }
+  
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error('Canvas context not available');
+      return;
+    }
+  
+    if (this.nighttimeLightChartInstance) this.nighttimeLightChartInstance.destroy();
+  
+    this.nighttimeLightChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: 'Avg Nighttime Light Intensity',
+            data: intensities,
+            borderColor: 'orange',
+            backgroundColor: 'rgba(255, 165, 0, 0.1)',
+            tension: 0.3,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Nighttime Light Intensity Trends'
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Year'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Light Intensity'
+            }
+          }
+        }
+      }
+    });
+  }
+  
+  async showSlumAreaTrends() {
+    await this.urbanService.getSlumAreaProportionTrends().subscribe({
+      next: (res) => {
+        this.cdr.detectChanges();
+  
+        setTimeout(() => {
+          this.renderslumChart(res.data); // unified function name
+        }, 0);
+      },
+      error: (err) => console.error('Error fetching slum trends:', err),
+    });
+  }
+  
+
+  renderslumChart(trendData: any[]) {
+    const years = trendData.map(item => item.year);
+    const metroData = trendData.map(item => item.zone_data?.["Metro"] ?? null);
+    const tier1Data = trendData.map(item => item.zone_data?.["Tier 1"] ?? null);
+    const tier2Data = trendData.map(item => item.zone_data?.["Tier 2"] ?? null);
+  
+    const canvas = this.dashboardslumChartRef?.nativeElement;
+    if (!canvas) {
+      console.error("Dashboard chart canvas not found");
+      return;
+    }
+  
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error('Canvas context not available');
+      return;
+    }
+  
+    if (this.slumInstance) this.slumInstance.destroy();
+  
+    this.slumInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: 'Metro',
+            data: metroData,
+            borderColor: 'red',
+            yAxisID: 'y1',
+            tension: 0.3,
+            fill: false
+          },
+          {
+            label: 'Tier 1',
+            data: tier1Data,
+            borderColor: 'blue',
+            yAxisID: 'y1',
+            tension: 0.3,
+            fill: false
+          },
+          {
+            label: 'Tier 2',
+            data: tier2Data,
+            borderColor: 'orange',
+            yAxisID: 'y1',
+            tension: 0.3,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Slum Area Proportion Trends by Urban Zone'
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Year'
+            }
+          },
+          y1: {
+            type: 'linear',
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Slum Area Proportion (%)'
+            },
+            min: 0,
+            max: 100
+          }
+        }
+      }
+    });
+  }
+  
+  async showLandUseTrends() {
+    await this.urbanService.getLandUseChangeTrends().subscribe({
+      next: (res) => {
+        this.cdr.detectChanges();
+  
+        setTimeout(() => {
+          this.renderLandUseChart(res.data);
+        }, 0);
+      },
+      error: (err) => console.error('Error fetching land use trends:', err),
+    });
+  }
+  
+  renderLandUseChart(trendData: any[]) {
+    const years = trendData.map(item => item.year);
+  
+    const getZoneDataSeries = (zone: string, landUse: string) =>
+      trendData.map(item => item.zone_data?.[zone]?.[landUse] ?? null);
+  
+    const canvas = this.dashboardLandUseChartRef?.nativeElement;
+    if (!canvas) {
+      console.error("Dashboard chart canvas not found");
+      return;
+    }
+  
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error('Canvas context not available');
+      return;
+    }
+  
+    if (this.landUseInstance) this.landUseInstance.destroy();
+  
+    this.landUseInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: 'Metro - Residential',
+            data: getZoneDataSeries("Metro", "Residential"),
+            borderColor: 'green',
+            yAxisID: 'y1',
+            tension: 0.3,
+            fill: false
+          },
+          {
+            label: 'Tier 1 - Residential',
+            data: getZoneDataSeries("Tier 1", "Residential"),
+            borderColor: 'blue',
+            yAxisID: 'y1',
+            tension: 0.3,
+            fill: false
+          },
+          {
+            label: 'Tier 2 - Residential',
+            data: getZoneDataSeries("Tier 2", "Residential"),
+            borderColor: 'purple',
+            yAxisID: 'y1',
+            tension: 0.3,
+            fill: false
+          }
+          // Add more datasets for Commercial, Green, etc. as needed
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Land Use Change Trends by Zoning Code'
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Year'
+            }
+          },
+          y1: {
+            type: 'linear',
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Land Use Area (sq km)'
+            },
+            min: 0
           }
         }
       }

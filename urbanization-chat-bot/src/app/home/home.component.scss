@@ -1,0 +1,66 @@
+.home-container {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.55),
+            rgba(0, 0, 0, 0.55)),
+        url('/assets/images/home.jpg') no-repeat center center/cover;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    color: white;
+    animation: fadeInUp 1s ease;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 1px 1px 5px #000;
+}
+
+p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    text-shadow: 1px 1px 3px #000;
+}
+
+.start-btn {
+    background: #00BFAE;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 6px 14px rgba(0, 191, 174, 0.3);
+    animation: fadeInUp 1.4s ease;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.start-btn:hover {
+    background: #00a695;
+    box-shadow: 0px 8px 20px rgba(0, 191, 174, 0.5);
+    transform: translateY(-2px);
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -9,9 +9,8 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-
+from typing import Dict
+import os
 
 
 app = FastAPI(title="Urbanization Shift Detection API")
@@ -62,13 +61,15 @@ menu_items = [
     {"count":"4","name": "Policy & Planning Insights", "url": "/policy"}
 ]
 
+class UserInput(BaseModel):
+    user_input: str
+
 @app.get("/")
 def read_root():
     return {"message": "Urbanization Shift Detection API is live 🚀"}
 
 @app.get("/menu")
 def get_menu():
- 
     return {"menu_items": menu_items}
 
 @app.get("/trends")
@@ -230,7 +231,7 @@ def predict(data: InputData):
 
     prediction = model.predict(X_combined)
     confidence = float(prediction[0][0])
-    predicted_class = int(confidence > 0.5)
+    predicted_class = int(confidence > 0.8)
 
     shift_status = "Urbanization Shift Detected" if predicted_class else "No Significant Urbanization Shift"
     confidence_percent = round(confidence * 100, 2) if predicted_class else round((1 - confidence) * 100, 2)
@@ -390,3 +391,162 @@ def nighttime_light_intensity_trends():
 
     except Exception as e:
         return {"error": str(e)}
+    
+@app.get("/summary-profile")
+def get_summary_profile():
+    """
+    Returns a summarized urban profile from the dataset, suitable for frontend visualization.
+    Includes average values for numerical features and most common values for categorical ones.
+    """
+    try:
+        df = pd.read_csv("urbanization_data.csv")
+
+        # Compute mean of numerical values
+        summary = {
+            "population_density": round(df["population_density"].mean(), 2),
+            "green_cover_percentage": round(df["green_cover_percentage"].mean(), 2),
+            "road_density": round(df["road_density"].mean(), 2),
+            "nighttime_light_intensity": round(df["nighttime_light_intensity"].mean(), 2),
+            "water_bodies_nearby": round(df["water_bodies_nearby"].mean(), 2),
+            "Male_Count": int(df["Male_Count"].mean()),
+            "Female_Count": int(df["Female_Count"].mean()),
+            "Year": int(df["Year"].mode()[0]),
+            "Slum_Area_Proportion": round(df["Slum Area Proportion (%)"].mean(), 2),
+            "Place_Name": df["Place_Name"].mode()[0],
+            "Land_Use_Type": df["Land Use Type"].mode()[0],
+            "Zoning_Code": df["Zoning Code or Urban Tier"].mode()[0]
+        }
+
+        return summary
+
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.get("/slum-area-proportion-trends")
+def slum_area_proportion_trends():
+    """
+    Returns average slum area proportion by year and urban tier (zone).
+    """
+    try:
+        df = pd.read_csv("urbanization_data.csv")
+
+        required_columns = ["Year", "Slum Area Proportion (%)", "Zoning Code or Urban Tier"]
+        if not all(col in df.columns for col in required_columns):
+            return {"error": "Missing required columns in dataset."}
+
+        # Group by year and zone and calculate average slum proportion
+        trends = df.groupby(["Year", "Zoning Code or Urban Tier"])["Slum Area Proportion (%)"].mean().reset_index()
+
+        # Format result
+        result = {}
+        for _, row in trends.iterrows():
+            year = int(row["Year"])
+            zone = row["Zoning Code or Urban Tier"]
+            if year not in result:
+                result[year] = {}
+            result[year][zone] = round(row["Slum Area Proportion (%)"], 2)
+
+        # Transform result to a list of objects per year
+        formatted_data = [{"year": year, "zone_data": zone_data} for year, zone_data in sorted(result.items())]
+
+        return {
+            "feature": "Slum Area Proportion Trends by Zone",
+            "description": (
+                "This endpoint shows how the proportion of slum areas changes across different urban zones "
+                "over the years. It helps identify the distribution and evolution of underdeveloped areas "
+                "within different zoning classifications (e.g., Metro, Tier 1, Tier 2)."
+            ),
+            "data": formatted_data
+        }
+
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.get("/land-use-change-trends")
+def land_use_change_trends():
+    """
+    Returns land use type frequency trends by year and zoning code.
+    """
+    try:
+        df = pd.read_csv("urbanization_data.csv")
+
+        required_columns = ["Year", "Zoning Code or Urban Tier", "Land Use Type"]
+        if not all(col in df.columns for col in required_columns):
+            return {"error": "Missing required columns in dataset."}
+
+        # Count frequency of each land use type per year and zone
+        grouped = df.groupby(["Year", "Zoning Code or Urban Tier", "Land Use Type"]).size().reset_index(name="Count")
+
+        result = {}
+        for _, row in grouped.iterrows():
+            year = int(row["Year"])
+            zone = row["Zoning Code or Urban Tier"]
+            land_use_type = row["Land Use Type"]
+            count = int(row["Count"])
+
+            if year not in result:
+                result[year] = {}
+            if zone not in result[year]:
+                result[year][zone] = {}
+            result[year][zone][land_use_type] = count
+
+        formatted_data = [{"year": year, "zone_data": zone_data} for year, zone_data in sorted(result.items())]
+
+        return {
+            "feature": "Land Use Change Trends by Zoning Code",
+            "description": (
+                "This endpoint provides trends in land use type frequency across various zoning codes over the years. "
+                "Useful for visualizing how urban space is categorized (e.g., Residential, Commercial) within different urban tiers."
+            ),
+            "data": formatted_data
+        }
+
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.get("/policy-insights")
+def policy_insights() -> Dict:
+    try:
+        # Load CSV data
+        file_path = os.path.join(os.path.dirname(__file__), "urbanization_data.csv")
+        df = pd.read_csv(file_path)
+
+        insights = []
+
+        # Calculate total population
+        if "Male_Count" in df.columns and "Female_Count" in df.columns:
+            df["Population"] = df["Male_Count"] + df["Female_Count"]
+
+        # Slum Area Insight
+        if "Slum Area Proportion (%)" in df.columns and "Year" in df.columns:
+            slum_trend = df.groupby("Year")["Slum Area Proportion (%)"].mean()
+            if slum_trend.iloc[-1] > slum_trend.iloc[0]:
+                insights.append("📉 Slum areas have increased over the years. Consider affordable housing schemes and slum redevelopment.")
+
+        # Green Cover Percentage Insight
+        if "green_cover_percentage" in df.columns and "Population" in df.columns:
+            green_trend = df.groupby("Year")[["green_cover_percentage", "Population"]].mean()
+            if green_trend["green_cover_percentage"].iloc[-1] < green_trend["green_cover_percentage"].iloc[0]:
+                insights.append("🌳 Green cover percentage has declined while population is rising. Suggest implementing urban greening programs.")
+
+        # Residential Use Frequency Insight (as proxy for area)
+        if "Land Use Type" in df.columns and "Year" in df.columns:
+            residential_trend = df[df["Land Use Type"] == "Residential"].groupby("Year").size()
+            if residential_trend.iloc[-1] < residential_trend.iloc[0]:
+                insights.append("🏘️ Frequency of Residential land use has declined — review urban planning or encourage residential development.")
+
+        # Zoning Insight
+        if "Zoning Code or Urban Tier" in df.columns and "Year" in df.columns:
+            zoning_trend = df.groupby(["Year", "Zoning Code or Urban Tier"]).size().unstack()
+            if "Metro" in zoning_trend.columns:
+                if zoning_trend["Metro"].iloc[-1] < zoning_trend["Metro"].iloc[0]:
+                    insights.append("🏙️ Metro zones are seeing reduced urban activity — consider incentives for redevelopment.")
+
+        return {
+            "title": "Policy & Planning Insights",
+            "insights": insights or ["No strong trends detected."]
+        }
+
+    except Exception as e:
+        return {"error": str(e)}
+

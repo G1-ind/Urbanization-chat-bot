@@ -52,4 +52,33 @@ export class UrbanizationService {
   getNightLight(): Observable<any> {
     return this.http.get(`${this.apiUrl}/nighttime-intensity-trends`);
   }
+
+  getSummary(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/summary-profile`);
+  }
+
+  getSlumAreaProportionTrends(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/slum-area-proportion-trends`);
+  }
+
+  getLandUseChangeTrends(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/land-use-change-trends`);
+  }
+
+  private apiKey = '96128d509cec4ce4a9dac45d8d790d44'; // Replace with your API key
+  private apiUrls = 'https://newsapi.org/v2/everything'; // API endpoint for NewsAPI
+
+  getUrbanizationNews(): Observable<any> {
+    const queryParams = {
+      q: 'urbanization OR "smart cities" OR "city planning" OR "population growth"',
+      apiKey: this.apiKey,
+      language: 'en', // Optional, filter by language
+      sortBy: 'publishedAt', // Optional, order by latest
+    };
+
+    return this.http.get<any>(this.apiUrls, { params: queryParams });
+  }
+  
+  
+  
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -15,4 +15,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 export class AppComponent {
   title = 'urbanization-chat-bot';
+  constructor(public router: Router) {}
+
+  // Helper method to determine if current route is home
+  isHomePage(): boolean {
+    return this.router.url === '/' || this.router.url === '/home';
+  }
 }

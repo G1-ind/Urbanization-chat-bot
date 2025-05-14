@@ -7,3 +7,4 @@ pandas
 scikit-learn==1.6.0
 numpy
 python-multipart
+openai
